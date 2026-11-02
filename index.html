@@ -387,6 +387,108 @@ body.com-tempo{padding-top:60px}
 @media (prefers-reduced-motion:reduce){#btn-zap-obrigada,#btn-zap-resultado,#btn-zap-expirou{animation:none;outline:3px solid #1FA055;outline-offset:3px}}
 @media print{#barra-tempo{display:none!important}body.com-tempo{padding-top:0}}
 </style>
+<style id="css-urgencia">
+/* ===== BOTÃO VERDE DO WHATSAPP: pisca SEMPRE (com ou sem o cronômetro), na MESMA cor, e é mais atrativo ===== */
+@keyframes urg-pisca{
+  0%,100%{box-shadow:0 0 0 0 rgba(22,148,71,.8),0 14px 26px -10px rgba(14,123,58,.75),inset 0 1.5px 0 rgba(255,255,255,.4);transform:scale(1);filter:brightness(1)}
+  50%{box-shadow:0 0 0 18px rgba(22,148,71,0),0 14px 26px -10px rgba(14,123,58,.75),inset 0 1.5px 0 rgba(255,255,255,.4);transform:scale(1.04);filter:brightness(1.18)}}
+@keyframes urg-brilho{0%,55%{left:-70%}100%{left:130%}}
+#btn-zap-resultado,#btn-zap-obrigada,#btn-zap-expirou{position:relative;overflow:hidden;isolation:isolate;min-height:72px;padding:14px 18px 18px;border-radius:20px;
+  background:linear-gradient(135deg,#25A55A 0%,#169447 48%,#0E7B3A 100%);color:#fff;border:2px solid rgba(255,255,255,.3);
+  box-shadow:0 14px 26px -10px rgba(14,123,58,.75),inset 0 1.5px 0 rgba(255,255,255,.4);gap:14px;align-items:center;justify-content:flex-start;
+  animation:urg-pisca 1.2s ease-in-out infinite}
+#btn-zap-resultado:hover,#btn-zap-obrigada:hover,#btn-zap-expirou:hover{background:linear-gradient(135deg,#2BB362 0%,#18A04C 48%,#0F8640 100%)}
+#btn-zap-resultado>*,#btn-zap-obrigada>*,#btn-zap-expirou>*{position:relative;z-index:1}
+#btn-zap-resultado::after,#btn-zap-obrigada::after,#btn-zap-expirou::after{content:'';position:absolute;top:0;left:-70%;width:38%;height:100%;z-index:0;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);animation:urg-brilho 2.8s ease-in-out infinite}
+#btn-zap-resultado svg,#btn-zap-obrigada svg,#btn-zap-expirou svg{flex:none;width:40px;height:40px;padding:8px;border-radius:50%;background:rgba(255,255,255,.22)}
+#btn-zap-resultado .duas,#btn-zap-obrigada .duas,#btn-zap-expirou .duas{font-size:18.5px;font-weight:800;line-height:1.2;letter-spacing:.005em}
+#btn-zap-resultado .duas small,#btn-zap-obrigada .duas small,#btn-zap-expirou .duas small{font-size:13.5px;font-weight:600;opacity:.96;margin-top:3px;letter-spacing:0}
+/* linha de progresso no pé do botão (como a de um vídeo), sem números: enche em 60 segundos */
+.zap-linha{position:absolute;left:0;right:0;bottom:0;height:6px;background:rgba(255,255,255,.28);z-index:2;pointer-events:none}
+.zap-linha i{display:block;height:100%;width:0;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.9);transition:width .25s linear}
+/* depois que a pessoa já clicou, o botão fica calmo */
+#btn-zap-resultado.calmo,#btn-zap-obrigada.calmo{animation:none}
+#btn-zap-resultado.calmo::after,#btn-zap-obrigada.calmo::after,.calmo .zap-linha{display:none}
+@media (prefers-reduced-motion:reduce){#btn-zap-obrigada,#btn-zap-resultado,#btn-zap-expirou{animation:none;outline:3px solid #0E7B3A;outline-offset:3px}
+  #btn-zap-resultado::after,#btn-zap-obrigada::after,#btn-zap-expirou::after{animation:none;display:none}}
+
+/* ===== CARTÃO DE URGÊNCIA (vermelho enquanto corre; verde quando a pessoa age) ===== */
+.urg{background:#FCEEEC;border:1.5px solid #E3B3AE;border-radius:16px;padding:14px 16px 16px;margin:22px 0 16px;color:#4A1511;text-align:left}
+.urg-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.urg-rot{font-size:13.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8E1F17;line-height:1.25;padding-top:4px}
+.urg-num{display:block;font-family:inherit;font-weight:700;font-size:36px;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.02em;color:#C0281C;text-align:right}
+.urg-legenda{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8E1F17;text-align:right;margin-top:4px;opacity:.9}
+.urg-barra{height:5px;background:#F1D0CC;border-radius:99px;margin:11px 0 12px;overflow:hidden}
+.urg-barra i{display:block;height:100%;width:100%;background:#C0281C;border-radius:99px;transition:width .25s linear}
+.urg-msg{margin:0;font-size:16.5px;line-height:1.5}
+.urg.encerrada{background:#FBE4E1;border-color:#D98A80}
+.urg.encerrada .urg-barra i{transition:width .5s linear}
+.urg.zap,.urg.notificada{background:#EAF5EE;border-color:#9CCBB0;color:#143D27}
+.urg.zap .urg-rot,.urg.notificada .urg-rot,.urg.zap .urg-num,.urg.notificada .urg-num,.urg.zap .urg-legenda,.urg.notificada .urg-legenda{color:#1B6B3E}
+.urg.zap .urg-barra,.urg.notificada .urg-barra{background:#CFE7D8}
+.urg.zap .urg-barra i,.urg.notificada .urg-barra i{background:#1B6B3E}
+
+/* ===== BOTÃO DE NOTIFICAÇÃO: outra cor (não é WhatsApp), pisca diferente: uma linha de luz passa por ele ===== */
+.notif-bloco[hidden],.notif-caixa[hidden]{display:none!important}
+.notif-bloco{margin:0 0 14px}
+@keyframes notif-pisca{
+  0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.9),0 14px 26px -10px rgba(0,0,0,.5),inset 0 1.5px 0 rgba(255,255,255,.25);transform:scale(1);filter:brightness(1)}
+  50%{box-shadow:0 0 0 18px rgba(212,175,55,0),0 14px 26px -10px rgba(0,0,0,.5),inset 0 1.5px 0 rgba(255,255,255,.25);transform:scale(1.035);filter:brightness(1.3)}}
+@keyframes notif-varre{0%{left:-6%}100%{left:106%}}
+#btn-notif{position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;gap:14px;width:100%;min-height:72px;padding:14px 18px 18px;margin:0 0 8px;
+  border-radius:20px;border:2px solid rgba(212,175,55,.6);background:linear-gradient(135deg,var(--ardosia) 0%,var(--ardosia-escura) 100%);color:#fff;font-family:inherit;text-align:left;cursor:pointer;
+  box-shadow:0 14px 26px -10px rgba(0,0,0,.5),inset 0 1.5px 0 rgba(255,255,255,.25);animation:notif-pisca 1.1s ease-in-out infinite}
+#btn-notif>*{position:relative;z-index:1}
+#btn-notif::after{content:'';position:absolute;top:0;bottom:0;left:-6%;width:3px;z-index:0;pointer-events:none;background:#F5D77E;box-shadow:0 0 14px 5px rgba(245,215,126,.85);animation:notif-varre 1.7s linear infinite}
+#btn-notif svg{flex:none;width:40px;height:40px;padding:9px;border-radius:50%;background:#D4AF37;color:#2B2208}
+#btn-notif .duas{display:flex;flex-direction:column;font-size:18.5px;font-weight:800;line-height:1.2}
+#btn-notif .duas small{font-size:13.5px;font-weight:600;opacity:.95;margin-top:3px}
+.notif-linha{position:absolute;left:0;right:0;bottom:0;height:6px;background:rgba(255,255,255,.22);z-index:2}
+.notif-linha i{display:block;height:100%;width:0;background:#F5D77E;transition:width .5s linear}
+@media (prefers-reduced-motion:reduce){#btn-notif{animation:none;outline:3px solid #D4AF37;outline-offset:3px}#btn-notif::after{display:none}}
+.notif-caixa{background:#fff;border:1.6px solid #D4AF37;border-radius:16px;padding:14px 16px;margin:6px 0 4px}
+.notif-caixa label{display:block;font-weight:700;margin-bottom:8px;font-size:16px}
+.notif-caixa label span{font-weight:500;color:var(--tinta-suave)}
+.notif-caixa textarea{width:100%;min-height:84px;border:1.6px solid var(--borda);border-radius:12px;padding:12px;font:inherit;font-size:16px;resize:vertical;background:var(--papel);color:var(--tinta);box-sizing:border-box}
+.notif-aviso{font-size:14.5px;margin:10px 0 12px;color:var(--tinta-suave);line-height:1.45}
+.notif-erro{font-size:14.5px;color:#9A2F23;font-weight:600;margin:0 0 10px}
+.notif-acoes{display:flex;gap:10px;flex-wrap:wrap}
+.notif-acoes .btn{width:auto;flex:1 1 150px;margin:0;min-height:56px}
+
+/* ===== ÁREA DA TERAPEUTA: indicador de interesse (não vai no PDF) ===== */
+.tags-int{display:flex;flex-wrap:wrap;margin-top:2px}
+.tag-int{display:inline-block;font-size:12.5px;font-weight:700;border-radius:999px;padding:3px 10px;margin:4px 6px 0 0;line-height:1.3}
+.tag-int.zap{background:#DDF1E5;color:#14532D}
+.tag-int.notif{background:#FFE9A8;color:#5C4500}
+.tag-int.nada{background:#ECEBE8;color:#55524A}
+.resumo-interesse{background:#FFF9E3;border:1.6px solid #D9C27A;border-radius:16px;padding:12px 14px;margin:0 0 14px}
+.ri-titulo{font-weight:800;font-size:15.5px;color:#4A3B05;margin-bottom:8px}
+.ri-grade{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ri-grade>div{background:#fff;border-radius:12px;padding:8px 10px;font-size:13.5px;font-weight:700;line-height:1.25}
+.ri-grade b{display:block;font-size:24px;line-height:1.1}
+.ri-grade small{display:block;font-weight:500;color:#5C5642;margin-top:2px}
+.ri-base{margin:8px 0 0;font-size:13px;color:#7A6618}
+.bloco-interesse{border:1.6px solid #D9C27A;background:#FFF9E3;border-radius:16px;padding:14px 16px;margin:0 0 18px}
+.bi-titulo{font-weight:800;font-size:16.5px;color:#4A3B05}
+.bi-titulo span{display:block;font-weight:600;font-size:13px;color:#7A6618;margin-top:2px}
+.bi-linha{margin-top:10px;font-size:16px;line-height:1.45}
+.bi-linha .sim{font-weight:800;color:#14532D}
+.bi-linha .nao{font-weight:700;color:#7A6618}
+.bi-recado{margin:6px 0 0;padding:8px 12px;border-left:4px solid #D4AF37;background:#fff;border-radius:0 10px 10px 0;font-style:italic;white-space:pre-wrap}
+@media print{.urg,.notif-bloco,.bloco-interesse,.resumo-interesse,.tags-int{display:none!important}}
+</style>
+<style id="css-capa">
+/* botão da capa: pisca na própria cor quando o código está preenchido */
+@keyframes capa-pisca{
+  0%,100%{box-shadow:0 0 0 0 rgba(var(--pulso-rgb,34,54,44),.7),var(--sombra-leve);transform:scale(1);filter:brightness(1)}
+  50%{box-shadow:0 0 0 15px rgba(var(--pulso-rgb,34,54,44),0),var(--sombra-leve);transform:scale(1.03);filter:brightness(1.4)}}
+#btn-entrar:not(:disabled){min-height:68px;font-size:20px;font-weight:800;letter-spacing:.01em;animation:capa-pisca 1.3s ease-in-out infinite}
+#btn-entrar:not(:disabled)::after{content:'\2192';font-weight:700;margin-left:2px}
+@media (prefers-reduced-motion:reduce){#btn-entrar:not(:disabled){animation:none;outline:3px solid var(--ardosia);outline-offset:3px}}
+#dica-codigo.pronto{color:#1B6B3E;font-weight:600;font-size:15.5px;line-height:1.4}
+#dica-codigo .ok-pre{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#1B6B3E;color:#fff;font-size:12px;font-weight:800;margin-right:6px;vertical-align:1px}
+</style>
 <style id="css-apres">
 #ap-overlay{position:fixed;inset:0;z-index:3000;background:#05070d;display:none}
 #ap-overlay.ativo{display:block}
@@ -710,6 +812,14 @@ body.ap-aberto{overflow:hidden}
           </div>
         </div>
         <div class="campo">
+          <label id="rot-alt-urg">Cronômetro de urgência de 60 segundos no final?</label>
+          <div class="alternar" id="alt-urgencia" role="radiogroup" aria-labelledby="rot-alt-urg">
+            <button type="button" class="ativa" data-v="1" role="radio" aria-checked="true">Sim, ligado<small>60 s para falar no WhatsApp; depois, só notificação</small></button>
+            <button type="button" data-v="0" role="radio" aria-checked="false">Não<small>o WhatsApp fica sempre disponível</small></button>
+          </div>
+          <div class="dica">O botão verde de WhatsApp pisca sempre, com ou sem o cronômetro. O que a pessoa fizer fica anotado na resposta dela.</div>
+        </div>
+        <div class="campo">
           <label id="rot-modo-cod">Como será o código?</label>
           <div class="alternar" id="alt-modo" role="radiogroup" aria-labelledby="rot-modo-cod">
             <button type="button" class="ativa" data-v="uni" role="radio" aria-checked="true">Individual<small>um código por pessoa</small></button>
@@ -721,7 +831,7 @@ body.ap-aberto{overflow:hidden}
             <label for="comp-qtd">Quantas pessoas podem usar o link?</label>
             <select id="comp-qtd"><option>1</option><option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option selected>50</option><option>100</option><option>200</option><option>500</option><option value="x">Outro número…</option></select>
             <input id="comp-qtd-outro" type="number" min="1" max="1000" placeholder="De 1 a 1000" style="display:none;margin-top:8px;max-width:180px">
-            <div class="dica">Cada pessoa que tocar em Entrar ocupa uma vaga e tem <b>30 minutos</b> para responder, com cronômetro na tela. Quando as vagas acabam, o link para de aceitar novas pessoas.</div>
+            <div class="dica">Cada pessoa que tocar em “Fazer o teste agora” ocupa uma vaga e tem <b>30 minutos</b> para responder, com cronômetro na tela. Quando as vagas acabam, o link para de aceitar novas pessoas.</div>
           </div>
           <div class="campo">
             <label for="comp-nome">Nome da campanha <span class="opc">(opcional)</span></label>
@@ -743,6 +853,7 @@ body.ap-aberto{overflow:hidden}
 
     <div class="aba-conteudo ver" id="aba-respostas">
       <div class="campo"><input id="busca" type="search" placeholder="Buscar por nome"></div>
+      <div id="resumo-interesse"></div>
       <div id="lista-respostas"><div class="vazio">Nenhuma resposta por enquanto.</div></div>
       <button class="btn btn-contorno" id="btn-csv" style="margin-top:14px">Baixar tudo em CSV</button>
     </div>
@@ -995,7 +1106,7 @@ const estado = {
 
 function guardar(c,v){ try{ localStorage.setItem(c, JSON.stringify(v)); }catch(e){} }
 function ler(c,p){ try{ const v = localStorage.getItem(c); return v ? JSON.parse(v) : p; }catch(e){ return p; } }
-function mostrarTela(id){ $$('.tela').forEach(t=>t.classList.remove('ativa')); $(id).classList.add('ativa'); window.scrollTo({top:0,behavior:'auto'}); if(typeof compBarra === 'function') compBarra(id); }
+function mostrarTela(id){ $$('.tela').forEach(t=>t.classList.remove('ativa')); $(id).classList.add('ativa'); if(typeof urgInicio === 'function') urgInicio(id); window.scrollTo({top:0,behavior:'auto'}); if(typeof compBarra === 'function') compBarra(id); }
 function avisar(id,txt){ const el=$(id); if(!txt){el.classList.remove('ver');el.textContent='';return;} el.textContent=txt; el.classList.add('ver'); }
 function hoje(){ return new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
 function zapNumero(bruto){ let n=String(bruto||'').replace(/\D/g,''); if(!n) return ''; if(n.length<=11) n='55'+n; return n; }
@@ -1081,7 +1192,7 @@ async function api(acao, dados, token){
     if(acao === ACOES.gerarCodigo){
       let codigo = dados.codigo;
       for(let t=0; t<6; t++){
-        const { error } = await c.from('travas_codigos').insert({ terapeuta_id:uid, codigo, cliente:dados.cliente||null, whatsapp:dados.whatsapp||null, mostrar_resultado: dados.mostrar !== false, ...(dados.compartilhado ? { compartilhado:true, usos_max:dados.usosMax } : {}) });
+        const { error } = await c.from('travas_codigos').insert({ terapeuta_id:uid, codigo, cliente:dados.cliente||null, whatsapp:dados.whatsapp||null, mostrar_resultado: dados.mostrar !== false, urgencia: dados.urgencia !== false, ...(dados.compartilhado ? { compartilhado:true, usos_max:dados.usosMax } : {}) });
         if(!error) return { ok:true, codigo };
         if(error.code === '23505'){ codigo = novoCodigo(); continue; }   // código repetido: sorteia outro
         return { ok:false, erro:String(error.message||error) };
@@ -1097,9 +1208,9 @@ async function api(acao, dados, token){
         usado:x.usado, mostrarResultado:x.mostrar_resultado !== false, usadoPor:x.usado_por||'', usadoEm:x.usado_em ? quando(x.usado_em) : '' })) };
     }
     if(acao === ACOES.listarRespostas){
-      const { data, error } = await c.from('travas_respostas').select('dados').eq('terapeuta_id', uid).order('criado_em',{ascending:false}).limit(300);
+      const { data, error } = await c.from('travas_respostas').select('dados,interesse').eq('terapeuta_id', uid).order('criado_em',{ascending:false}).limit(300);
       if(error) return { ok:false, erro:String(error.message||error) };
-      return { ok:true, respostas:(data||[]).map(x => x.dados) };
+      return { ok:true, respostas:(data||[]).map(x => Object.assign({}, x.dados, { interesse: x.interesse || {} })) };
     }
     if(acao === ACOES.enviarEmail) return { ok:false, erro:'sem_servico_de_email' };   // o site abre o e-mail já escrito
     return { ok:false, erro:'acao_desconhecida' };
@@ -1120,7 +1231,7 @@ async function validarCodigo(codigo){
   if(!modoLocal()){
     const r = await api(ACOES.validarCodigo,{codigo});
     if(r && r.ok === false && r.erro) return {ok:false, msg:'Não consegui verificar agora. Confira a sua internet e tente de novo.'};
-    if(r && (r.valido === true || r.ok === true)) return {ok:true, mostrar: r.mostrar_resultado !== false, cliente: r.cliente || '', compartilhado: r.compartilhado === true, duracao: r.duracao_min || 30};
+    if(r && (r.valido === true || r.ok === true)) return {ok:true, mostrar: r.mostrar_resultado !== false, urgencia: r.urgencia !== false, cliente: r.cliente || '', compartilhado: r.compartilhado === true, duracao: r.duracao_min || 30};
     return {ok:false, msg:(r && r.msg) || 'Esse código não está valendo. Ele já foi usado ou foi digitado diferente.'};
   }
   const lista = ler(CHAVE_CODIGOS, []);
@@ -1128,7 +1239,7 @@ async function validarCodigo(codigo){
   if(!achado) return {ok:false, msg:'Esse código não existe. Confira as letras e tente de novo.'};
   if(achado.compartilhado) return compLocalValido(achado);
   if(achado.usado) return {ok:false, msg:'Esse código já foi usado. Peça um novo para a Mônica.'};
-  return {ok:true, mostrar:(achado.mostrarResultado !== false), cliente: achado.cliente || ''};
+  return {ok:true, mostrar:(achado.mostrarResultado !== false), urgencia:(achado.urgencia !== false), cliente: achado.cliente || ''};
 }
 function marcarUsadoLocal(codigo, nome){
   const lista = ler(CHAVE_CODIGOS, []);
@@ -1145,7 +1256,7 @@ $('#campo-codigo').addEventListener('input', e => {
   avisar('#aviso-codigo','');
   const b = $('#btn-entrar');
   b.disabled = e.target.value.length < 5;
-  b.textContent = b.disabled ? 'Digite o código' : 'Entrar';
+  b.textContent = b.disabled ? 'Digite o código' : 'Fazer o teste agora';
 });
 $('#campo-codigo').addEventListener('keydown', e => { if(e.key==='Enter' && !$('#btn-entrar').disabled) $('#btn-entrar').click(); });
 
@@ -1154,15 +1265,17 @@ $('#btn-entrar').addEventListener('click', async () => {
   const codigo = $('#campo-codigo').value.trim().toUpperCase();
   b.disabled = true; b.textContent = 'Verificando o código...';
   const r = await validarCodigo(codigo);
-  if(!r.ok){ b.disabled=false; b.textContent='Entrar'; avisar('#aviso-codigo', r.msg); return; }
+  if(!r.ok){ b.disabled=false; b.textContent='Fazer o teste agora'; avisar('#aviso-codigo', r.msg); return; }
   estado.codigo = codigo;
   estado.mostrarResultado = r.mostrar !== false;
+  estado.urgencia = r.urgencia !== false;
+  estado.urg = null; estado.acaoToken = null; estado.salvou = undefined;
   estado.acesso = null;
   if(r.compartilhado){
     const ac = await compIniciar(codigo);
-    if(!ac.ok){ b.disabled = false; b.textContent = 'Entrar'; avisar('#aviso-codigo', ac.msg); return; }
+    if(!ac.ok){ b.disabled = false; b.textContent = 'Fazer o teste agora'; avisar('#aviso-codigo', ac.msg); return; }
   }
-  b.textContent = 'Entrar';
+  b.textContent = 'Fazer o teste agora';
   if(r.cliente && !$('#campo-nome').value.trim()){ $('#campo-nome').value = r.cliente; $('#campo-nome').dispatchEvent(new Event('input')); }
   prepararOrientacao();
   mostrarTela('#tela-orientacao');
@@ -1173,13 +1286,13 @@ $('#voltar-dados1').addEventListener('click', ()=> mostrarTela('#tela-dados1'));
 /* ---- código já preenchido pelo link (?c=CODIGO) ---- */
 (function(){
   try{
-    const bruto = new URLSearchParams(location.search).get('c') || '';
+    const bruto = (function(q){ return q.get('c') || q.get('codigo') || q.get('code') || ''; })(new URLSearchParams(location.search));
     const c = bruto.toUpperCase().replace(/[^A-Z0-9-]/g,'').slice(0,9);
     if(!c) return;
     const campo = $('#campo-codigo');
     campo.value = c;
     campo.dispatchEvent(new Event('input'));
-    $('#dica-codigo').textContent = 'O seu código já está preenchido. É só tocar em Entrar.';
+    $('#dica-codigo').innerHTML = '<span class="ok-pre" aria-hidden="true">✔</span> Código já preenchido. É só tocar em <b>“Fazer o teste agora”</b>.'; $('#dica-codigo').classList.add('pronto');
   }catch(e){}
 })();
 /* ============================================================================
@@ -1228,12 +1341,13 @@ async function compStatus(codigo, token){
   const c = ler(CHAVE_CODIGOS, []).find(x => x.codigo === codigo), a = c && (c.acessos||[]).find(x => x.token === token);
   if(!a) return { estado:'invalido' };
   return { estado: a.concluidoEm ? 'concluido' : (Date.now() > a.expiraEm ? 'expirado' : 'ativo'), numero:a.numero, agora:new Date().toISOString(),
-    expira_em:new Date(a.expiraEm).toISOString(), exibicao:codigo + '-' + a.numero, mostrar_resultado: c.mostrarResultado !== false, duracao_min: c.duracaoMin || 30 };
+    expira_em:new Date(a.expiraEm).toISOString(), exibicao:codigo + '-' + a.numero, mostrar_resultado: c.mostrarResultado !== false, urgencia: c.urgencia !== false, duracao_min: c.duracaoMin || 30 };
 }
 function compAplicar(codigo, d, token){
   estado.acesso = { codigo, token, numero:d.numero, exibicao:d.exibicao || (codigo + '-' + d.numero), duracaoMin:d.duracao_min || 30,
     expiraEm:Date.parse(d.expira_em), offset:Date.parse(d.agora) - Date.now() };
   if(d.mostrar_resultado !== undefined) estado.mostrarResultado = d.mostrar_resultado !== false;
+  if(d.urgencia !== undefined) estado.urgencia = d.urgencia !== false;
   compLigarBarra();
   return { ok:true };
 }
@@ -1259,7 +1373,7 @@ async function compIniciar(codigo){
     if(c.usos >= c.usosMax) c.usado = true;
     guardar(CHAVE_CODIGOS, lista);
     ac = { ok:true, numero:c.usos, token, agora:new Date(agora).toISOString(), expira_em:new Date(agora + dur).toISOString(), duracao_min:c.duracaoMin || 30,
-      exibicao:codigo + '-' + c.usos, mostrar_resultado:c.mostrarResultado !== false };
+      exibicao:codigo + '-' + c.usos, mostrar_resultado:c.mostrarResultado !== false, urgencia:c.urgencia !== false };
   }
   guardar(chave, { token:ac.token });
   return compAplicar(codigo, ac, ac.token);
@@ -1270,16 +1384,16 @@ function compLocalConcluir(){
 }
 function compLocalValido(c){
   if(c.usado || (c.usos || 0) >= c.usosMax) return { ok:false, msg:'Este link atingiu o limite de acessos. Fale com a ' + PRIM_TER + ' para receber um novo.' };
-  return { ok:true, mostrar:(c.mostrarResultado !== false), cliente:'', compartilhado:true, duracao:c.duracaoMin || 30 };
+  return { ok:true, mostrar:(c.mostrarResultado !== false), urgencia:(c.urgencia !== false), cliente:'', compartilhado:true, duracao:c.duracaoMin || 30 };
 }
 /* ao abrir o link: avisa já na capa que existe cronômetro (ou que o link acabou), sem gastar vaga */
 (async function(){
   try{
-    const bruto = new URLSearchParams(location.search).get('c') || '';
+    const bruto = (function(q){ return q.get('c') || q.get('codigo') || q.get('code') || ''; })(new URLSearchParams(location.search));
     const c = bruto.toUpperCase().replace(/[^A-Z0-9-]/g,'').slice(0,9);
     if(!c) return;
     const r = await validarCodigo(c);
-    if(r.ok && r.compartilhado) $('#dica-codigo').textContent = 'O seu código já está preenchido. Ao tocar em Entrar, você terá ' + (r.duracao || 30) + ' minutos para responder, com cronômetro na tela. Não feche a página depois de entrar.';
+    if(r.ok && r.compartilhado) { $('#dica-codigo').innerHTML = '<span class="ok-pre" aria-hidden="true">✔</span> Código já preenchido. Ao tocar em <b>“Fazer o teste agora”</b>, você terá ' + (r.duracao || 30) + ' minutos para responder, com cronômetro na tela. Não feche a página depois de entrar.'; $('#dica-codigo').classList.add('pronto'); }
     else if(!r.ok) avisar('#aviso-codigo', r.msg);
   }catch(e){}
 })();
@@ -1303,19 +1417,19 @@ async function compGerar(){
   b.disabled = true; b.textContent = 'Gerando...';
   let codigo = novoCodigo();
   if(!modoLocal()){
-    const r = await api(ACOES.gerarCodigo, { codigo, cliente:nome, whatsapp:'', mostrar, compartilhado:true, usosMax });
+    const r = await api(ACOES.gerarCodigo, { codigo, cliente:nome, whatsapp:'', mostrar, compartilhado:true, usosMax, urgencia:urgSel });
     if(!r || r.ok === false){ b.disabled = false; b.textContent = 'Gerar código compartilhado'; $('#caixa-codigo').innerHTML = '<div class="aviso ver">Não consegui gerar o código agora. Saia da área, entre de novo e tente outra vez.</div>'; return; }
     codigo = r.codigo;
   }else{
     const lista = ler(CHAVE_CODIGOS, []);
-    lista.unshift({ codigo, cliente:nome, whatsapp:'', criadoEm:hoje(), usado:false, mostrarResultado:mostrar, compartilhado:true, usosMax, usos:0, duracaoMin:30, acessos:[] });
+    lista.unshift({ codigo, cliente:nome, whatsapp:'', criadoEm:hoje(), usado:false, mostrarResultado:mostrar, compartilhado:true, usosMax, usos:0, duracaoMin:30, acessos:[], urgencia:urgSel });
     guardar(CHAVE_CODIGOS, lista);
   }
   b.disabled = false; b.textContent = 'Gerar código compartilhado';
   $('#caixa-codigo').innerHTML = `
     <div class="codigo-gerado">
       <div class="valor">${codigo}</div>
-      <div class="para">${nome ? escH(nome) + ' · ' : ''}vale para ${usosMax} ${usosMax === 1 ? 'pessoa' : 'pessoas'} · ${mostrar ? 'a pessoa vê o resultado no final' : 'só você vê o resultado'}</div>
+      <div class="para">${nome ? escH(nome) + ' · ' : ''}vale para ${usosMax} ${usosMax === 1 ? 'pessoa' : 'pessoas'} · ${mostrar ? 'a pessoa vê o resultado no final' : 'só você vê o resultado'} · ${urgSel ? 'com cronômetro de 60 s' : 'sem cronômetro de 60 s'}</div>
     </div>
     <div class="aviso ver" style="margin-top:12px">Coloque <b>este link</b> no seu anúncio, post ou página. Cada pessoa que entrar ocupa uma vaga numerada (${codigo}-1, ${codigo}-2…) e tem 30 minutos para responder.</div>
     <div class="linha-item" style="margin-top:10px"><span class="esq"><span class="sub" style="white-space:normal;word-break:break-all">${linkDoTeste(codigo)}</span></span></div>
@@ -1360,6 +1474,221 @@ function compLigarLista(){
     await compEncerrar(b.dataset.compFim); carregarCodigos();
   }));
 }
+/* abrir direto a área da terapeuta: endereço-do-site#admin (usado pelo botão do site com vários testes) */
+window.addEventListener('load', () => { if(location.hash === '#admin'){ const la = $('#link-admin'); if(la) la.click(); } });
+/* ============================================================================
+   FIM DO TESTE: urgência de 60 s, WhatsApp que se fecha, NOTIFICAÇÃO e indicador de interesse
+   ============================================================================ */
+let urgSel = true;
+$$('#alt-urgencia button').forEach(b => b.addEventListener('click', () => {
+  urgSel = b.dataset.v === '1';
+  $$('#alt-urgencia button').forEach(x => { const on = x === b; x.classList.toggle('ativa', on); x.setAttribute('aria-checked', on ? 'true' : 'false'); });
+}));
+/* os 3 botões verdes de WhatsApp ganham o mesmo ícone */
+(function(){
+  const ref = document.querySelector('#btn-zap-resultado svg'); if(!ref) return;
+  ['#btn-zap-obrigada', '#btn-zap-expirou'].forEach(sel => { const b = $(sel); if(b && !b.querySelector('svg')) b.insertAdjacentHTML('afterbegin', ref.outerHTML); });
+})();
+
+const URG_SEGUNDOS = 60, URG_ADIAR_MAX = 600;
+const URG_PRIM = (CONFIG.terapeuta || '').split(' ')[0];
+let urgTimer = null;
+const urgFmt = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+const URG_SINO = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 22a2.4 2.4 0 0 0 2.4-2.4H9.6A2.4 2.4 0 0 0 12 22Zm7-6.2V11a7 7 0 0 0-5.2-6.8V3.5a1.8 1.8 0 0 0-3.6 0v.7A7 7 0 0 0 5 11v4.8l-1.8 1.8v1h17.6v-1L19 15.8Z"/></svg>';
+const URG_TEXTOS = {
+  janela:     () => '<b>Este é o momento de falar com a ' + URG_PRIM + '.</b> O que você sentiu ao responder está vivo agora. Toque no botão verde e fale com ela pelo WhatsApp <b>nos próximos 60 segundos</b>. Passado esse tempo, o atalho direto se fecha e você precisará aguardar o retorno dela.',
+  encerrada:  () => '<b>O atalho direto para o WhatsApp da ' + URG_PRIM + ' foi encerrado.</b> Você ainda pode avisá-la de que quer conversar: ao enviar uma notificação, ela vê o seu interesse no sistema dela. <b>Atenção: uma notificação não é uma conversa no WhatsApp.</b> A ' + URG_PRIM + ' responderá assim que puder, e isso pode levar mais tempo.',
+  zap:        () => '<b>Ótimo, você agiu a tempo.</b> A conversa com a ' + URG_PRIM + ' está aberta no WhatsApp: é só enviar a mensagem que já está pronta.',
+  notificada: () => '<b>Pronto, a ' + URG_PRIM + ' foi avisada do seu interesse.</b> Lembre-se: uma notificação não abre uma conversa no WhatsApp. Ela retornará assim que puder.'
+};
+const urgDecorrido = () => (estado.urg && estado.urg.inicio) ? (Date.now() - estado.urg.inicio) / 1000 : 0;
+const urgAdiou = () => (estado.urg && estado.urg.fim) ? Math.max(0, Math.floor((Date.now() - estado.urg.fim) / 1000)) : 0;
+
+function urgInicio(id){
+  if(id !== '#tela-resultado' && id !== '#tela-obrigada') return;
+  const btn = $(id === '#tela-resultado' ? '#btn-zap-resultado' : '#btn-zap-obrigada'); if(!btn) return;
+  ['#urg-card', '#urg-notif'].forEach(s => { const e = $(s); if(e) e.remove(); });
+  clearInterval(urgTimer);
+  if(!btn.querySelector('.zap-linha')) btn.insertAdjacentHTML('beforeend', '<span class="zap-linha" aria-hidden="true"><i></i></span>');
+  btn.onclick = urgCliqueZap; estado.urgBtn = btn;                                 // anota o clique no WhatsApp (sempre)
+  if(!estado.urg) estado.urg = { fase: estado.urgencia === false ? 'livre' : 'espera', inicio: 0, fim: 0 };
+  if(estado.urgencia !== false) urgMontar(btn);
+  urgRender();
+  const u = estado.urg;
+  if(!u.inicio){                                                                   // o relógio só começa quando a pessoa VÊ o cartão (o resultado é longo)
+    const alvo = $('#urg-card') || btn;
+    if('IntersectionObserver' in window){
+      const io = new IntersectionObserver(es => { if(es.some(e => e.isIntersecting)){ io.disconnect(); urgIniciar(); } }, { threshold: 0.6 });
+      io.observe(alvo);
+    }else urgIniciar();
+  }else if(u.fase === 'janela' || u.fase === 'encerrada') urgTimer = setInterval(urgTick, 250);
+}
+function urgMontar(btn){
+  const P = URG_PRIM, card = document.createElement('div');
+  card.id = 'urg-card'; card.className = 'urg'; card.setAttribute('role', 'group'); card.setAttribute('aria-label', 'Convite para falar agora');
+  card.innerHTML = '<div class="urg-topo"><span class="urg-rot" id="urg-rot"></span><span><b class="urg-num" id="urg-num">01:00</b><small class="urg-legenda" id="urg-legenda"></small></span></div>'
+    + '<div class="urg-barra" aria-hidden="true"><i id="urg-barra"></i></div><p class="urg-msg" id="urg-msg" aria-live="polite"></p>';
+  const notif = document.createElement('div'); notif.id = 'urg-notif'; notif.className = 'notif-bloco'; notif.hidden = true;
+  notif.innerHTML = '<button type="button" id="btn-notif">' + URG_SINO + '<span class="duas">Enviar notificação para a ' + P + '<small>avisa que você quer conversar · não abre o WhatsApp</small></span>'
+    + '<span class="notif-linha" aria-hidden="true"><i id="notif-linha"></i></span></button>'
+    + '<div class="notif-caixa" id="notif-caixa" hidden><label for="notif-texto">Quer deixar um recado para a ' + P + '? <span>(opcional)</span></label>'
+    + '<textarea id="notif-texto" maxlength="500" rows="3" placeholder="Ex.: Quero entender melhor o meu resultado."></textarea>'
+    + '<p class="notif-aviso">Ao enviar, a ' + P + ' recebe a sua notificação e o seu recado no sistema dela. <b>Isto não abre uma conversa no WhatsApp.</b></p>'
+    + '<p class="notif-erro" id="notif-erro" role="alert"></p>'
+    + '<div class="notif-acoes"><button type="button" class="btn btn-primario" id="notif-enviar">Enviar notificação</button><button type="button" class="btn btn-contorno" id="notif-voltar">Voltar</button></div></div>';
+  btn.insertAdjacentElement('beforebegin', card); card.insertAdjacentElement('afterend', notif);
+  $('#btn-notif').onclick = () => { const c = $('#notif-caixa'); c.hidden = !c.hidden; if(!c.hidden) $('#notif-texto').focus(); };
+  $('#notif-voltar').onclick = () => { $('#notif-caixa').hidden = true; };
+  $('#notif-enviar').onclick = urgEnviarNotificacao;
+}
+function urgIniciar(){
+  const u = estado.urg; if(!u || u.inicio) return;
+  u.inicio = Date.now(); if(u.fase === 'espera') u.fase = 'janela';
+  clearInterval(urgTimer); if(u.fase === 'janela') urgTimer = setInterval(urgTick, 250);
+  urgRender();
+}
+function urgRender(){
+  const u = estado.urg; if(!u) return;
+  const btn = estado.urgBtn, fechado = (u.fase === 'encerrada' || u.fase === 'notificada');
+  if(btn){                                                                         // o WhatsApp some quando o tempo acaba
+    btn.style.display = fechado ? 'none' : '';
+    btn.setAttribute('aria-hidden', fechado ? 'true' : 'false'); btn.tabIndex = fechado ? -1 : 0;
+    btn.classList.toggle('calmo', u.fase === 'zap');
+    if(fechado && btn.getAttribute('href') !== '#'){ btn.dataset.href = btn.getAttribute('href'); btn.setAttribute('href', '#'); }
+  }
+  const card = $('#urg-card'); if(!card) return;
+  card.className = 'urg' + (u.fase === 'encerrada' ? ' encerrada' : u.fase === 'zap' ? ' zap' : u.fase === 'notificada' ? ' notificada' : '');
+  $('#urg-notif').hidden = u.fase !== 'encerrada';
+  const msg = $('#urg-msg'), rot = $('#urg-rot'), chave = (u.fase === 'espera' || u.fase === 'janela' || u.fase === 'verificando') ? 'janela' : u.fase;
+  rot.textContent = { janela: 'Fale com a ' + URG_PRIM + ' agora', encerrada: 'Seu tempo acabou', zap: 'Conversa aberta', notificada: 'Notificação enviada' }[chave] || '';
+  msg.innerHTML = (URG_TEXTOS[chave] || URG_TEXTOS.janela)();
+  urgAtualizar();
+}
+function urgAtualizar(){
+  const u = estado.urg, num = $('#urg-num'); if(!u || !num) return;
+  const leg = $('#urg-legenda'), barra = $('#urg-barra'), linha = estado.urgBtn && estado.urgBtn.querySelector('.zap-linha i');
+  if(u.fase === 'espera'){ num.textContent = urgFmt(URG_SEGUNDOS); leg.textContent = 'restantes'; barra.style.width = '100%'; if(linha) linha.style.width = '0%'; }
+  else if(u.fase === 'janela' || u.fase === 'verificando'){
+    const dec = Math.min(URG_SEGUNDOS, urgDecorrido()), resta = Math.max(0, Math.ceil(URG_SEGUNDOS - dec));
+    num.textContent = urgFmt(resta); leg.textContent = 'restantes'; barra.style.width = ((URG_SEGUNDOS - dec) / URG_SEGUNDOS * 100) + '%'; if(linha) linha.style.width = (dec / URG_SEGUNDOS * 100) + '%';
+  }else if(u.fase === 'encerrada'){
+    const adiou = urgAdiou(), mostra = Math.min(adiou, URG_ADIAR_MAX), pct = (mostra / URG_ADIAR_MAX * 100) + '%';
+    num.textContent = urgFmt(mostra); leg.textContent = adiou >= URG_ADIAR_MAX ? 'adiando há mais de' : 'você está adiando há';
+    barra.style.width = pct; const nl = $('#notif-linha'); if(nl) nl.style.width = pct;
+  }else if(u.fase === 'zap'){ num.textContent = '✔'; leg.textContent = 'você chegou a tempo'; barra.style.width = '100%'; }
+  else if(u.fase === 'notificada'){ num.textContent = urgFmt(u.adiouFinal || 0); leg.textContent = 'até decidir'; barra.style.width = '100%'; }
+}
+function urgTick(){
+  const u = estado.urg; if(!u || !$('#urg-card')) return;
+  if(u.fase === 'janela' && urgDecorrido() >= URG_SEGUNDOS){ urgEncerrar(); return; }
+  if(u.fase === 'janela' || u.fase === 'encerrada') urgAtualizar();
+}
+async function urgAguardarSalvamento(ms){
+  if(estado.acaoPronta) await Promise.race([estado.acaoPronta, new Promise(r => setTimeout(r, ms))]);
+}
+async function urgEncerrar(){
+  const u = estado.urg; if(!u || u.fase !== 'janela') return;
+  u.fase = 'verificando'; urgAtualizar();
+  await urgAguardarSalvamento(4000);
+  if(estado.salvou !== true || !estado.acaoToken){                                // não foi possível registrar: NÃO fecha o WhatsApp (a pessoa nunca fica sem caminho)
+    u.fase = 'livre'; clearInterval(urgTimer);
+    ['#urg-card', '#urg-notif'].forEach(s => { const e = $(s); if(e) e.remove(); });
+    if(estado.urgBtn){ const l = estado.urgBtn.querySelector('.zap-linha'); if(l) l.remove(); }
+    urgRender(); return;
+  }
+  u.fim = u.inicio + URG_SEGUNDOS * 1000; u.fase = 'encerrada'; urgRender();
+}
+function urgCliqueZap(ev){
+  const u = estado.urg; if(!u) return;
+  if(u.fase === 'encerrada' || u.fase === 'notificada' || u.fase === 'verificando'){ ev.preventDefault(); return; }
+  const seg = Math.round(urgDecorrido());
+  urgRegistrar('whatsapp', { segundos: seg });
+  if(u.fase === 'janela' || u.fase === 'espera'){ u.fase = 'zap'; u.zapSeg = seg; clearInterval(urgTimer); urgRender(); }
+}
+async function urgEnviarNotificacao(){
+  const u = estado.urg, b = $('#notif-enviar'); if(!u || u.fase !== 'encerrada') return;
+  const adiou = urgAdiou(), texto = $('#notif-texto').value.trim().slice(0, 500);
+  b.disabled = true; b.textContent = 'Enviando...'; $('#notif-erro').textContent = '';
+  const r = await urgRegistrar('notificacao', { segundos: URG_SEGUNDOS + adiou, adiou_segundos: adiou, mensagem: texto });
+  if(!r || r.ok !== true){ b.disabled = false; b.textContent = 'Enviar notificação'; $('#notif-erro').textContent = 'Não consegui enviar agora. Confira a sua internet e tente de novo.'; return; }
+  u.fase = 'notificada'; u.adiouFinal = Math.min(adiou, URG_ADIAR_MAX); clearInterval(urgTimer); urgRender();
+}
+/* anota o que a pessoa fez na RESPOSTA dela (sistema da terapeuta): servidor ou, no modo de teste, neste aparelho */
+async function urgRegistrar(tipo, dados){
+  try{
+    await urgAguardarSalvamento(8000);
+    if(!estado.acaoToken) return { ok:false };
+    if(modoLocal()){
+      const lista = ler(CHAVE_RESP, []), cod = estado.acesso ? estado.acesso.exibicao : estado.codigo;
+      const r = lista.find(x => x.codigo === cod && x.nome === estado.nome); if(!r) return { ok:false };
+      r.interesse = r.interesse || {}; const agora = new Date().toISOString();
+      if(tipo === 'whatsapp'){ const w = r.interesse.whatsapp; r.interesse.whatsapp = w ? Object.assign(w, { cliques:(w.cliques || 1) + 1 }) : { em:agora, segundos:dados.segundos, cliques:1 }; }
+      else if(!r.interesse.notificacao) r.interesse.notificacao = { em:agora, segundos:dados.segundos, adiou_segundos:dados.adiou_segundos, mensagem:String(dados.mensagem || '').replace(/[<>]/g, ' ').trim().slice(0, 600) };
+      guardar(CHAVE_RESP, lista); return { ok:true };
+    }
+    return await compRpc('travas_registrar_acao', { p_token: estado.acaoToken, p_tipo: tipo, p_dados: dados });
+  }catch(e){ return { ok:false }; }
+}
+
+/* ---- área da terapeuta: selos, resumo e bloco "indicador de interesse" ---- */
+function urgDur(s){ if(s === null || s === undefined || isNaN(s)) return '—'; s = Math.round(s); if(s < 60) return s + ' s'; const m = Math.floor(s / 60), r = s % 60; return m + ' min' + (r ? ' ' + r + ' s' : ''); }
+const urgMedia = v => { v = v.filter(x => typeof x === 'number' && !isNaN(x)); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+function urgTags(r){
+  const i = r.interesse || {}, t = [];
+  if(i.whatsapp) t.push('<span class="tag-int zap">WhatsApp · ' + urgDur(i.whatsapp.segundos) + '</span>');
+  if(i.notificacao) t.push('<span class="tag-int notif">Notificação · ' + urgDur(i.notificacao.adiou_segundos) + ' depois</span>');
+  if(!t.length && r.urgencia === true) t.push('<span class="tag-int nada">Sem ação no fim</span>');
+  return t.length ? '<span class="tags-int">' + t.join('') + '</span>' : '';
+}
+function urgResumo(lista){
+  const caixa = $('#resumo-interesse'); if(!caixa) return;
+  const base = (lista || []).filter(r => r.urgencia === true || (r.interesse && (r.interesse.whatsapp || r.interesse.notificacao)));
+  if(!base.length){ caixa.innerHTML = ''; return; }
+  const z = base.filter(r => r.interesse && r.interesse.whatsapp), n = base.filter(r => r.interesse && r.interesse.notificacao);
+  const sem = base.filter(r => !(r.interesse && (r.interesse.whatsapp || r.interesse.notificacao))).length;
+  const mz = urgMedia(z.map(r => r.interesse.whatsapp.segundos)), mn = urgMedia(n.map(r => r.interesse.notificacao.adiou_segundos));
+  caixa.innerHTML = '<div class="resumo-interesse"><div class="ri-titulo">Interesse depois do resultado</div><div class="ri-grade">'
+    + '<div><b>' + z.length + '</b>clicaram no WhatsApp<small>' + (mz === null ? 'sem média' : 'em média ' + urgDur(mz) + ' depois do resultado') + '</small></div>'
+    + '<div><b>' + n.length + '</b>enviaram notificação<small>' + (mn === null ? 'sem média' : 'em média ' + urgDur(mn) + ' depois do tempo acabar') + '</small></div>'
+    + '<div><b>' + sem + '</b>sem ação<small>não clicaram nem notificaram</small></div></div>'
+    + '<p class="ri-base">Em ' + base.length + (base.length === 1 ? ' resposta' : ' respostas') + ' com o cronômetro de 60 s. Só você vê isto; não vai no PDF.</p></div>';
+}
+function urgBloco(r){
+  const i = r.interesse || {}, w = i.whatsapp, n = i.notificacao;
+  if(r.urgencia === undefined && !w && !n) return '';                              // resposta de antes deste recurso
+  const L = [];
+  if(r.urgencia === false) L.push('<div class="bi-linha"><b>Cronômetro de 60 s:</b> <span class="nao">desligado neste código</span> (o WhatsApp ficou sempre disponível).</div>');
+  L.push('<div class="bi-linha"><b>WhatsApp:</b> ' + (w ? '<span class="sim">clicou</span> ' + urgDur(w.segundos) + ' depois do resultado' + (w.cliques > 1 ? ' · ' + w.cliques + ' cliques' : '') : '<span class="nao">não clicou</span>') + '</div>');
+  if(r.urgencia !== false || n) L.push('<div class="bi-linha"><b>Notificação:</b> ' + (n ? '<span class="sim">enviou</span> ' + urgDur(n.adiou_segundos) + ' depois de o tempo acabar (' + urgDur(n.segundos) + ' depois do resultado)'
+    + (n.mensagem ? '<div class="bi-recado">' + escH(n.mensagem) + '</div>' : '<div class="bi-recado" style="font-style:normal">sem recado escrito</div>') : '<span class="nao">não enviou</span>') + '</div>');
+  if(!w && !n && r.urgencia !== false) L.push('<div class="bi-linha"><b>Resumo:</b> <span class="nao">não clicou no WhatsApp nem enviou notificação.</span></div>');
+  return '<div class="bloco-interesse"><div class="bi-titulo">Indicador de interesse<span>só no seu sistema · não vai no PDF</span></div>' + L.join('') + '</div>';
+}
+/* a lista se atualiza sozinha enquanto a terapeuta está olhando as respostas (para a notificação chegar "logo") */
+async function urgAtualizarLista(){
+  let lista = ler(CHAVE_RESP, []);
+  if(!modoLocal()){ const r = await api(ACOES.listarRespostas, {}); if(r && Array.isArray(r.respostas)) lista = r.respostas; else if(Array.isArray(r)) lista = r; }
+  const sig = x => JSON.stringify(x.map(r => [r.codigo, r.interesse]));
+  if(sig(lista) === sig(respostasCache)) return;
+  respostasCache = lista; const t = ($('#busca').value || '').toLowerCase().trim();
+  desenharRespostas(t ? lista.filter(r => (r.nome || '').toLowerCase().includes(t)) : lista);
+}
+setInterval(() => {
+  try{
+    if(document.hidden) return;
+    const adm = $('#tela-admin'); if(!adm || !adm.classList.contains('ativa')) return;
+    if(!$('#aba-respostas').classList.contains('ver') || $('#detalhe-resposta').style.display === 'block') return;
+    if(document.activeElement && document.activeElement.id === 'busca') return;
+    urgAtualizarLista();
+  }catch(e){}
+}, 30000);
+/* ---- capa: o brilho do botão usa a cor do próprio botão ---- */
+(function(){
+  try{
+    const hex = getComputedStyle(document.documentElement).getPropertyValue('--ardosia').trim().replace('#','');
+    if(/^[0-9a-fA-F]{6}$/.test(hex)) document.documentElement.style.setProperty('--pulso-rgb', [0,2,4].map(i => parseInt(hex.substr(i,2),16)).join(','));
+  }catch(e){}
+})();
 function prepararOrientacao(){
   compAvisoOrient();
   $('#orient-passo3').innerHTML = estado.mostrarResultado
@@ -1563,6 +1892,7 @@ $('#btn-copiar').addEventListener('click', async () => {
 });
 
 async function enviarResultado(r){
+  estado.acaoPronta = new Promise(res => { estado.acaoRes = res; });
   const pacote = {
     codigo:(estado.acesso ? estado.acesso.exibicao : estado.codigo), nome:estado.nome, idade:estado.idade, genero:estado.genero,
     whatsapp:estado.whatsapp, email:estado.email, profissao:estado.profissao, renda:estado.renda,
@@ -1573,13 +1903,15 @@ async function enviarResultado(r){
     travas: r.linhas.map(l=>({id:l.id, nome:l.nome, nota:l.nota, nivel:l.nivel})),
     respostas: PERGUNTAS.map((p,i)=>({n:i+1, pergunta:p.q, trava:p.t, valor:estado.respostas[i]})),
     emailTerapeuta: CONFIG.emailTerapeuta,
-    consentimento:true, consentimentoEm:hoje()
+    consentimento:true, consentimentoEm:hoje(),
+    urgencia: estado.urgencia !== false
   };
   const lista = ler(CHAVE_RESP, []); lista.unshift(pacote); guardar(CHAVE_RESP, lista);
 
   if(modoLocal()){
     if(estado.acesso) compLocalConcluir(); else marcarUsadoLocal(estado.codigo, estado.nome);
     $('#nota-envio').textContent = 'Resultado salvo neste aparelho (a planilha ainda não foi conectada).';
+    estado.acaoToken = 'local'; estado.salvou = true; if(estado.acaoRes) estado.acaoRes();
     return;
   }
   const resp = await api(ACOES.salvarResposta, estado.acesso ? Object.assign({}, pacote, { codigo:estado.codigo }) : pacote, estado.acesso ? estado.acesso.token : null);
@@ -1587,6 +1919,7 @@ async function enviarResultado(r){
     ? 'Não consegui registrar agora. Toque no botão verde para enviar o seu resultado direto para a Mônica.'
     : 'Pronto: a Mônica já recebeu o seu resultado.';
   $('#nota-envio').textContent = msgEnvio; $('#nota-envio-2').textContent = msgEnvio;
+  estado.acaoToken = (resp && resp.acao) || null; estado.salvou = !!(resp && resp.ok !== false); if(estado.acaoRes) estado.acaoRes();
 }
 
 /* ============================================================================
@@ -1711,7 +2044,7 @@ function mensagemConvite(primeiro, codigo, mostrar){
     '',
     'Separei um presente de cuidado para você: o Teste de Travas Mentais. Em poucos minutos ele mostra o que pode estar segurando o seu avanço hoje.',
     '',
-    'É só tocar no link abaixo. O seu código já vai preenchido, você só precisa entrar:',
+    'É só tocar no link abaixo. Ao abrir, o seu código já vai preenchido: é só tocar em “Fazer o teste agora”:',
     linkDoTeste(codigo),
     '',
     'Se o link não abrir direto, o seu código é: *' + codigo + '*',
@@ -1733,7 +2066,7 @@ $('#btn-gerar').addEventListener('click', async ()=>{
   for(let i=0; i<qtd; i++){
     let codigo = novoCodigo();
     if(!modoLocal()){
-      const r = await api(ACOES.gerarCodigo,{codigo, cliente:nomeCli, whatsapp:zapCli, mostrar});
+      const r = await api(ACOES.gerarCodigo,{codigo, cliente:nomeCli, whatsapp:zapCli, mostrar, urgencia:urgSel});
       if(!r || r.ok === false){
         $('#caixa-codigo').innerHTML = '<div class="aviso ver">Não consegui gerar o código agora. Saia da área, entre de novo e tente outra vez.</div>';
         break;
@@ -1741,7 +2074,7 @@ $('#btn-gerar').addEventListener('click', async ()=>{
       codigo = r.codigo;
     }else{
       const lista = ler(CHAVE_CODIGOS, []);
-      lista.unshift({codigo, cliente:nomeCli, whatsapp:zapCli, criadoEm:hoje(), usado:false, mostrarResultado:mostrar});
+      lista.unshift({codigo, cliente:nomeCli, whatsapp:zapCli, criadoEm:hoje(), usado:false, mostrarResultado:mostrar, urgencia:urgSel});
       guardar(CHAVE_CODIGOS, lista);
     }
     gerados.push(codigo);
@@ -1749,7 +2082,7 @@ $('#btn-gerar').addEventListener('click', async ()=>{
   b.disabled = false; b.textContent = 'Gerar código';
   if(!gerados.length) return;
 
-  const textoVis = mostrar ? 'A cliente vê o resultado no final.' : 'Só você vê o resultado.';
+  const textoVis = (mostrar ? 'A cliente vê o resultado no final.' : 'Só você vê o resultado.') + (urgSel ? ' Cronômetro de 60 s ligado.' : ' Sem cronômetro de 60 s.');
   if(gerados.length === 1){
     const codigo = gerados[0];
     const primeiro = nomeCli ? nomeCli.split(' ')[0] : '';
@@ -1830,6 +2163,7 @@ async function carregarRespostas(){
   respostasCache = lista; desenharRespostas(lista);
 }
 function desenharRespostas(lista){
+  urgResumo(respostasCache);
   const caixa = $('#lista-respostas');
   if(!lista.length){ caixa.innerHTML='<div class="vazio">Nenhuma resposta por enquanto.</div>'; return; }
   caixa.innerHTML = lista.map((r,i)=>{
@@ -1838,7 +2172,7 @@ function desenharRespostas(lista){
     return `<button class="linha-item" data-i="${i}">
       <span class="esq">
         <span class="nome">${escH(r.nome||'Sem nome')}${r.idade ? ', ' + escH(r.idade) : ''}${/-\d+$/.test(r.codigo||'') ? '<span class="tag-vis">' + escH(r.codigo) + '</span>' : ''}</span>
-        <span class="sub">${r.data||''}${top ? ' · ' + top.nome : ''}</span>
+        <span class="sub">${r.data||''}${top ? ' · ' + top.nome : ''}</span>${urgTags(r)}
       </span>
       <span class="etiqueta e-${nivel}">${contarNivel(r,'alta')} altas</span>
     </button>`;
@@ -2068,6 +2402,7 @@ function abrirDetalhe(r){
   $('#detalhe-conteudo').innerHTML = `
     <h2 style="font-size:26px;margin:10px 0 4px">${escH(r.nome||'Sem nome')}</h2>
     <p style="color:var(--tinta-suave);font-size:16px;margin-bottom:16px">${escH(r.data||'')} · ${res.altas} travas altas${/-\d+$/.test(r.codigo||'') ? ' · código ' + escH(r.codigo) : ''}</p>
+    ${urgBloco(r)}
 
     <div class="ficha">
       <dl>
