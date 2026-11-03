@@ -1849,7 +1849,9 @@ function mensagemCliente(r, comResultado){
       'Quais horários você tem disponíveis? Fico no aguardo, com carinho e gratidão.'
     ].join('\n');
   }
-  const top = r.linhas.slice().sort((a,b)=>b.nota-a.nota).slice(0,3);
+  const ordenadas = r.linhas.slice().sort((a,b)=>b.nota-a.nota);
+  const altasLista = ordenadas.filter(l => l.nivel === 'alta');                // TODAS as travas altas (antes só as 3 primeiras)
+  const top = altasLista.length ? altasLista : ordenadas.slice(0,3);           // sem nenhuma alta: as 3 mais fortes
   const dorLetras = Array.from(estado.dor);   // conta letras e emojis inteiros, sem cortar ao meio
   const dor = dorLetras.length > 140 ? dorLetras.slice(0,140).join('') + '...' : estado.dor;
   return [
@@ -1859,7 +1861,7 @@ function mensagemCliente(r, comResultado){
     '',
     'Sou *' + estado.nome + '*, ' + estado.idade + ' anos, ' + estado.profissao + '.',
     '',
-    'As minhas travas mais fortes:',
+    (altasLista.length ? (altasLista.length === 1 ? 'A minha trava alta:' : 'As minhas travas altas:') : 'As minhas travas mais fortes:'),
     ...top.map(l => '- ' + l.nome + ': ' + num(l.nota) + '/10 (' + nomeNivel(l.nivel).toLowerCase() + ')'),
     '',
     'No total: ' + (r.altas === 1 ? '1 alta' : r.altas + ' altas') + ', ' + (r.medias === 1 ? '1 média' : r.medias + ' médias') + ' e ' + (r.baixas === 1 ? '1 baixa' : r.baixas + ' baixas') + '.',
@@ -2386,7 +2388,8 @@ function abrirDetalhe(r){
   const res = { altas:contarNivel(r,'alta'), medias:contarNivel(r,'media'), baixas:contarNivel(r,'baixa') };
   const primeiro = (r.nome||'').split(' ')[0];
   const destino = zapNumero(r.whatsapp);
-  const topTres = ord.slice(0,3).map(l=> '- ' + l.nome + ': ' + num(l.nota) + '/10 (' + nomeNivel(l.nivel).toLowerCase() + ')').join('\n');
+  const altasOrd = ord.filter(l => l.nivel === 'alta');                         // TODAS as travas altas (antes só as 3 primeiras)
+  const topTres = (altasOrd.length ? altasOrd : ord.slice(0,3)).map(l=> '- ' + l.nome + ': ' + num(l.nota) + '/10 (' + nomeNivel(l.nivel).toLowerCase() + ')').join('\n');
   const msgCli = [
     'Oi, ' + primeiro + '! Aqui é a Mônica.',
     '',
